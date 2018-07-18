@@ -1,15 +1,27 @@
 ﻿
 namespace CleanCode.MagicNumbers
 {
+    public static class StatusRejected
+    {
+        public static string status1 = "1";
+        public static string status2 = "2";
+    }
+
+    public enum StatusApproved
+    {
+        status1 = 1,
+        status2 = 2
+    }
+
     public class MagicNumbers
     {
         public void ApproveDocument(int status)
         {
-            if (status == 1)
+            if (status == StatusApproved.status1)
             {
                 // ...
             }
-            else if (status == 2)
+            else if (status == StatusApproved.status2)
             {
                 // ...
             }
@@ -19,13 +31,15 @@ namespace CleanCode.MagicNumbers
         {
             switch (status)
             {
-                case "1":
+                case StatusRejected.status1:
                     // ...
                     break;
-                case "2":
+                case StatusRejected.status2:
                     // ...
                     break;
             }
         }
     }
+
+
 }
