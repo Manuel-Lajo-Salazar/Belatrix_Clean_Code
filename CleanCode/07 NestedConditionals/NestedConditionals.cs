@@ -21,34 +21,34 @@ namespace CleanCode.NestedConditionals
 
         public void Cancel()
         {
+            // If reservation already started throw exception
+            IsReservationAlreadyStarted(From);
+
             // Gold customers can cancel up to 24 hours before
             if (Customer.LoyaltyPoints > 100)
             {
-                // If reservation already started throw exception
-                if (DateTime.Now > From)
-                {
-                    throw new InvalidOperationException("It's too late to cancel.");
-                }
-                if ((From - DateTime.Now).TotalHours < 24)
-                {
-                    throw new InvalidOperationException("It's too late to cancel.");
-                }
-                IsCanceled = true;
+                IsReservationTooSoon(From, 24);
             }
+            // Regular customers can cancel up to 48 hours before
             else
             {
-                // Regular customers can cancel up to 48 hours before
-
-                // If reservation already started throw exception
-                if (DateTime.Now > From)
-                {
-                    throw new InvalidOperationException("It's too late to cancel.");
-                }
-                if ((From - DateTime.Now).TotalHours < 48)
-                {
-                    throw new InvalidOperationException("It's too late to cancel.");
-                }
-                IsCanceled = true;
+                IsAlreadyStarted(From);
+                IsReservationTooSoon(From, 48);
+            }
+            IsCanceled = true;
+        }
+        
+        public void IsReservationAlreadyStarted(DateTime from){
+            if (DateTime.Now > from)
+            {
+                throw new InvalidOperationException("It's too late to cancel.");
+            }
+        }
+                
+        public void IsReservationTooSoon(DateTime from, minimumHours){
+            if ((from - DateTime.Now).TotalHours < minimumHours)
+            {
+                throw new InvalidOperationException("It's too late to cancel.");
             }
         }
 
